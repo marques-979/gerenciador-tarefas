@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<p class="resumo">{{ feitas }} de {{ total }} tarefas concluídas</p>
+
+<form class="nova" action="{{ url_for('tarefas.adicionar') }}" method="post">
+  <input type="text" name="titulo" placeholder="O que precisa ser feito?" maxlength="120" required>
+  <select name="prioridade" aria-label="Prioridade">
+    {% for p in prioridades %}
+      <option value="{{ p }}" {{ 'selected' if p == 'media' }}>{{ p|capitalize }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Adicionar</button>
+</form>
+
+<nav class="filtros">
+  {% for f in ['todas', 'pendentes', 'concluidas'] %}
+    <a href="{{ url_for('tarefas.index', filtro=f) }}" class="{{ 'ativo' if f == filtro }}">{{ f|capitalize }}</a>
+  {% endfor %}
+</nav>
+
+{% if tarefas %}
+<ul class="lista">
+  {% for t in tarefas %}
+  <li class="{{ 'feita' if t['concluida'] }}">
+    <form action="{{ url_for('tarefas.alternar', tarefa_id=t['id']) }}" method="post">
+      <button class="check" type="submit" aria-label="Alternar conclusão">{{ '✔' if t['concluida'] else '' }}</button>
+    </form>
+
+    <div class="texto">
+      <span class="titulo">{{ t['titulo'] }}</span>
+      <span class="etiqueta {{ t['prioridade'] }}">{{ t['prioridade'] }}</span>
+    </div>
+
+    <a class="acao" href="{{ url_for('tarefas.editar', tarefa_id=t['id']) }}">Editar</a>
+    <form action="{{ url_for('tarefas.excluir', tarefa_id=t['id']) }}" method="post"
+          onsubmit="return confirm('Excluir esta tarefa?');">
+      <button class="acao perigo" type="submit">Excluir</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="vazio">Nenhuma tarefa por aqui.</p>
+{% endif %}
+{% endblock %}
