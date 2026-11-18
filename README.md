@@ -76,4 +76,4 @@ gerenciador-tarefas/
 
 ## Autor
 
-Ismael Costa Marques — [GitHub](https://github.com/marques-979) · [LinkedIn](https://linkedin.com/in/ismael-costa-marques)
+Ismael Costa Marques —  [LinkedIn](https://linkedin.com/in/ismael-costa-marques)
